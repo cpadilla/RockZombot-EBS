@@ -1,0 +1,25 @@
+{
+  "name": "rockzombot-ebs",
+  "version": "1.0.0",
+  "description": "Extension Backend Service for RockZombot",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cpadilla/RockZombot-EBS.git"
+  },
+  "author": "cpadilla",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cpadilla/RockZombot-EBS/issues"
+  },
+  "homepage": "https://github.com/cpadilla/RockZombot-EBS#readme",
+  "dependencies": {
+    "cookie-parser": "^1.4.3",
+    "express": "^4.16.2",
+    "querystring": "^0.2.0",
+    "request": "^2.83.0"
+  }
+}
