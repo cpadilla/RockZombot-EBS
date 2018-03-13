@@ -1,10 +1,15 @@
-const express = require('express'); // Express web server framework
-const router = express.Router();
 const spotify = require('../Spotify/swrapper.js')
 
-router.get('playSong/:song', function(req, res, next){
+exports.playSong = function(req, res, next){
     console.log("playSong");
     console.log("parameters: ", req.params);
-});
 
-module.exports = router;
+    var song = req.params.song;
+
+    spotify.playSong(song).then( function (e) {
+        console.log(e)
+    }).catch( function (error) {
+        console.log(error)
+    });
+};
+

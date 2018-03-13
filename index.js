@@ -16,6 +16,8 @@ var client_id = 'dfbe0669b7fb4707ad274d0751f3ea90'; // Your client id
 var client_secret = 'c903b543827e4676bee7a5ca74388395'; // Your secret
 var redirect_uri = 'http://localhost:8888/callback/'; // Your redirect uri
 
+var spotify = require('./routes/spotify');
+
 /**
  * Generates a random string containing numbers and letters
  * @param  {number} length The length of the string
@@ -36,9 +38,11 @@ var stateKey = 'spotify_auth_state';
 var app = express();
 
 app.use(express.static(__dirname + '/public'))
-   .use(cookieParser());
+  .use(cookieParser());
 
-app.use('/api/spotify', require('./routes/spotify'))
+// Spotify
+
+app.get('/spotify/playSong/:song', spotify.playSong);
 
 app.get('/login', function(req, res) {
 

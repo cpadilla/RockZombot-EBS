@@ -3,6 +3,7 @@ const request = require('request-promise')
 var token = ""  //Place your spotify token here
 module.exports = {
   playSong: function getSong(song){
+    console.log('Getting song: ', song)
     if(song.indexOf(' ') > 0){
       song.replace(" ", "%20")
     }
@@ -27,7 +28,11 @@ module.exports = {
             'Authorization': `Bearer ${token}`
           }
         };
-        request(options_new).then(function(success){resolve("Request Succesfully Sent!")}).catch(function(error){reject(error)})
+        request(options_new).then( function(success) {
+          resolve("Request Succesfully Sent!")
+        }).catch( function(error) {
+          reject(error)
+        })
         //resolve(trackInfo.tracks.items[0].uri);
       }).catch(function(error){
         reject(error);
