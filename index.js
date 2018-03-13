@@ -38,6 +38,8 @@ var app = express();
 app.use(express.static(__dirname + '/public'))
    .use(cookieParser());
 
+app.use('/api/spotify', require('./routes/spotify'))
+
 app.get('/login', function(req, res) {
 
   var state = generateRandomString(16);
