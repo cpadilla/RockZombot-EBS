@@ -1,14 +1,16 @@
 const request = require('request-promise')
 
-var token = "" //token here
+var token = ""; //place your token here
 module.exports = {
   playSong: function getSong(song){
+    //var spaced_song = song+ " ";
     if(song.indexOf(' ') >= 0){
-      var song = song.replace(/ /g,"%20")
+      var parsed_song = song.replace(/ /g,"%20")
+      song = parsed_song;
       console.log("Parsed Song: " + parsed_song);
     }
     var options = {
-      url: `https://api.spotify.com/v1/search?q=${parsed_song}&type=track&market=us&limit=1`,
+      url: `https://api.spotify.com/v1/search?q=${song}&type=track&market=us&limit=1`,
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`,
