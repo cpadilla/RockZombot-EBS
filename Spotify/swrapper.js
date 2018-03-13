@@ -1,14 +1,15 @@
-const request = require('request-promise')
+const request = require('request-promise');
 
-var token = ""; //place your token here
+var token = ""; //place your spotify token here
 module.exports = {
   playSong: function getSong(song){
-    //var spaced_song = song+ " ";
+//If the string has spaces, replace space with %20
     if(song.indexOf(' ') >= 0){
       var parsed_song = song.replace(/ /g,"%20")
       song = parsed_song;
-      console.log("Parsed Song: " + parsed_song);
+      //console.log("Parsed Song: " + parsed_song);
     }
+//Options for get song request
     var options = {
       url: `https://api.spotify.com/v1/search?q=${song}&type=track&market=us&limit=1`,
       headers: {
@@ -20,7 +21,7 @@ module.exports = {
     return promise = new Promise(function (resolve, reject){
       request(options).then(function(data){
         var trackInfo = JSON.parse(data);
-        //console.log(trackInfo.tracks.items[0].uri);
+//Options for play song on device request note: adding: ?device:<device> has issues
         var options_new = {
           url: "https://api.spotify.com/v1/me/player/play",
           method: "PUT",
@@ -37,6 +38,8 @@ module.exports = {
       });
     });
   },
+
+  //Depricated ignore
   play: function play(){
 
     return promise = new Promise(function(resolve, reject){
