@@ -1,0 +1,33 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Example of the Authorization Code flow with Spotify</title>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+    <button id="submit">Submit</button>
+    </style>
+  </head>
+
+  <body>
+    <input type="text" id="songname" placeholder="Song">
+    <script>
+
+      document.getElementById("submit").addEventListener("click", function(e){
+        var request = new XMLHttpRequest();
+        var songname = document.getElementById("songname").value;
+        var data = {"songname": songname};
+
+        request.open('POST', '/getsong', true);
+        request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        request.send(JSON.stringify(data));
+        request.onReadyStateChange = function(){
+          if(request.status == 200){
+            console.log("GOOD" + request.responseText);
+          }else{
+            console.log("No 200 received bad request");
+          }
+        }
+      });
+
+    </script>
+  </body>
+</html>
