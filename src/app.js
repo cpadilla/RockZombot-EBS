@@ -6,16 +6,17 @@
  * For more information, read
  * https://developer.spotify.com/web-api/authorization-guide/#authorization_code_flow
  */
-const express = require('express'); // Express web server framework
-const request = require('request'); // "Request" library
-const cookieParser = require('cookie-parser');
-const bodyParser = require('body-parser');
-const client_id = 'dfbe0669b7fb4707ad274d0751f3ea90'; // Your client id
-const client_secret = 'c903b543827e4676bee7a5ca74388395'; // Your secret
-const redirect_uri = 'http://localhost:8888/callback/'; // Your redirect uri
+const express = require('express')
+const helmet = require('helmet')
+const logger = require('morgan')
+const bodyParser = require('body-parser')
+const cookieParser = require('cookie-parser')
+const config = require('./configuration')
+const MiddlewareHelper = require('./middlewares')
 const router = require('./routing')
-
-const app = express();
+const port = config.get('PORT') || 3000
+const env = config.get('ENVIRONMENT')
+const app = express()
 
 app.use(helmet())
 app.use(MiddlewareHelper.addCorsHeaders)
