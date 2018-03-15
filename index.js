@@ -62,15 +62,14 @@ app.get('/login', function(req, res) {
 
 
 app.get('/song', function(req, res){
-  res.sendFile(__dirname + "/public/postrequesttest.html");
+  res.sendFile(__dirname + "/public/post.html");
 });
 
 
 app.post('/getsong', function(req, res){
   console.log("Post Request Received! " + req.body.songname);
   spotify.playSong(req.body.songname).then(function (e){
-    console.log(e)
-    res.send(e)
+    res.send(e);
   }).catch(function (error){
     console.log(error)
     res.send(error);
