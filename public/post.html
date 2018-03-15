@@ -1,16 +1,60 @@
 <!doctype html>
 <html>
   <head>
-    <title>Example of the Authorization Code flow with Spotify</title>
+    <title>Post Rquest to spotify API</title>
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
-    <button id="submit">Submit</button>
-    </style>
-  </head>
 
+
+  </head>
   <body>
-    <input type="text" id="songname" placeholder="Song">
-    <img id="picture" src="">
-    <h1 id="info" ></h1>
+    <style>
+.card {
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  transition: 0.3s;
+  width: 40%;
+}
+.card:hover {
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+.container2 {
+  padding: 2px 16px;
+}
+ul{
+  font-size: 20px;
+  padding-left: 10px;
+  list-style: none;
+  display: inline-flex;
+  margin: 0;
+}
+li{
+  padding-left: 10px
+}
+.footer {
+   border-top: solid;
+   border-color: #00000029;
+   border-width: 1px;
+   left: 0;
+   bottom: 0;
+   width: 100%;
+   text-align: center;
+}
+</style>
+<form align="center" >
+  <input type="text" id="songname" name="github" placeholder="song">
+  <button id="submit">Submit</button>
+</form>
+
+<div class="container" align="center">
+<div class="card">
+<a id="login_url" href=""><img id="album_art"src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Spotify_logo_without_text.svg/2000px-Spotify_logo_without_text.svg.png" alt="Avatar" style="width:100%"></a>
+<div class="footer">
+  <ul>
+    <li id="song">SPOTIFY</li>
+    <li id="artist"></li>
+  </ul>
+</div>
+</div>
+</div>
     <script>
 
       document.getElementById("submit").addEventListener("click", function(e){
@@ -23,12 +67,16 @@
         request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
         request.send(JSON.stringify(data));
         request.onreadystatechange  = function(){
-          if(request.status == 200){
+          if(request.readyState === 4 && request.status === 200){
+            //var image_number = Math.floor(Math.random() * Math.floor(3))
             var parsedData = JSON.parse(request.responseText);
-
+            console.log(parsedData.name);
+            document.getElementById("artist").innerHTML = "- " + parsedData.album.artists[0].name;
+            document.getElementById("song").innerHTML = parsedData.name;
+            document.getElementById("album_art").src = parsedData.album.images[0].url;
             //console.log("GOOD" + request.responseText);
-          }else{
-            console.log("No 200 received bad request");
+          }else if(request.status === 400){
+            console.error();("400 received bad request");
           }
         }
       });

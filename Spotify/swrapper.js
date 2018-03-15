@@ -1,6 +1,7 @@
 const request = require('request-promise');
 
-var token = '' //place your spotify token here
+var token = "";  //Place token here
+
 module.exports = {
   playSong: function getSong(song){
 //If the string has spaces, replace space with %20
