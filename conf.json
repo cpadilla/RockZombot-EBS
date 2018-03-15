@@ -1,0 +1,46 @@
+{
+  "tags": {
+      "allowUnknownTags": true,
+      "dictionaries": ["jsdoc"]
+  },
+  "source": {
+      "include": ["src"],
+      "includePattern": ".js$",
+      "excludePattern": "(node_modules/|api/|routing/)"
+  },
+  "plugins": [
+      "plugins/markdown",
+      "plugins/summarize"
+  ],
+  "templates": {
+      "cleverLinks"           : true,
+      "monospaceLinks"        : false,
+      "systemName"            : "HostMaker Api Example",
+      "footer"                : "",
+      "copyright"             :  "Copyright © Rúben Gomes",
+      "includeDate"           : true,
+      "navType"               : "vertical",
+      "theme"                 : "paper",
+      "linenums"              : true,
+      "collapseSymbols"       : true,
+      "inverseNav"            : true,
+      "outputSourceFiles"     : true,
+      "outputSourcePath"      : true,
+      "dateFormat"            : "ddd MMM Do YYYY",
+      "sort"					: true,
+      "search"                : true,
+      "syntaxTheme"           : "default"
+  },
+  "opts": {
+      "destination": "./docs/",
+      "encoding": "utf8",
+      "private": true,
+      "recurse": true,
+      "lenient": true,
+      "template": "./node_modules/ink-docstrap/template"
+  },
+  "markdown"  : {
+    "parser"   : "gfm",
+    "hardwrap" : true
+  }
+}

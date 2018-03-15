@@ -1,0 +1,12 @@
+instrumentation:
+    root: ./src/api
+    excludes:
+      - '**/*model*.js'
+reporting:
+    dir: ./coverage_integration
+checks:
+    global:
+        statements: 95
+        lines: 95
+        branches: 95
+        functions: 100 

@@ -4,24 +4,91 @@
   "description": "Extension Backend Service for RockZombot",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "lint": "eslint ./src/**/*.js",
+    "watch:lint": "esw -w --cache --clear --color",
+    "clean:jsdocs": "rimraf docs",
+    "clean:apidocs": "rimraf apidocs",
+    "clean:docs": "npm run clean:jsdocs && npm run clean:apidocs",
+    "clean:coverage": "rimraf coverage",
+    "build:jsdocs": "npm run clean:jsdocs && jsdoc -c conf.json -R README.md",
+    "show:jsdocs": "opener docs/index.html",
+    "build:apidocs": "npm run clean:apidocs && apidoc -i src/ -o apidocs/",
+    "show:apidocs": "opener apidocs/index.html",
+    "build:docs": "npm run build:jsdocs && npm run build:apidocs",
+    "show:docs": "npm run show:jsdocs && npm run show:apidocs",
+    "show:coverage": "opener ./coverage_unit/lcov-report/index.html && opener ./coverage_integration/lcov-report/index.html",
+    "test:unit": "istanbul cover --config ./.istanbul.unit.yml _mocha -- ./src/**/*.spec.js ./src/**/**/*.spec.js -t 20000 --recursive -R spec --full-trace --require ./test/configuration.js",
+    "test:integration": "istanbul cover --config ./.istanbul.integration.yml _mocha -- ./test/integration/**/*.test.js --recursive --reporter spec --require ./test/configuration.js",
+    "test:watch": "npm run test:unit -- -w",
+    "test": "npm run test:unit && npm run test:integration",
+    "start:dev": "npm run watch:lint",
+    "start": "nodemon .",
+    "build": "npm run build:docs && npm run lint && npm t && npm run show:coverage && npm run show:docs",
+    "prepublishOnly": "npm run lint && npm t"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/cpadilla/RockZombot-EBS.git"
   },
+  "keywords": [
+    "Twitch",
+    "Plugin",
+    "es6",
+    "es7",
+    "Promises",
+    "NodeJs",
+    "Mocha",
+    "Chai",
+    "SinonJS",
+    "Express",
+    "Api"
+  ],
   "author": "cpadilla",
-  "license": "ISC",
+  "contributors": [
+    "rubengomex (<gomesruben21@gmail.com>)"
+  ],
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/cpadilla/RockZombot-EBS/issues"
   },
   "homepage": "https://github.com/cpadilla/RockZombot-EBS#readme",
+  "devDependencies": {
+    "apidoc": "0.17.6",
+    "babel-eslint": "7.2.3",
+    "chai": "3.5.0",
+    "chai-as-promised": "7.1.1",
+    "eslint": "4.16.0",
+    "eslint-config-standard": "11.0.0-beta.0",
+    "eslint-plugin-import": "2.8.0",
+    "eslint-plugin-node": "5.2.1",
+    "eslint-plugin-promise": "3.6.0",
+    "eslint-plugin-standard": "3.0.1",
+    "eslint-watch": "3.1.3",
+    "ink-docstrap": "1.3.2",
+    "istanbul": "1.1.0-alpha.1",
+    "jsdoc": "3.5.5",
+    "mocha": "3.2.0",
+    "morgan": "1.9.0",
+    "nodemon": "1.11.0",
+    "opener": "1.4.3",
+    "rimraf": "2.6.2",
+    "sinon": "4.2.0",
+    "sinon-chai": "2.14.0",
+    "supertest": "3.0.0"
+  },
   "dependencies": {
+    "axios": "0.18.0",
     "body-parser": "^1.18.2",
     "cookie-parser": "^1.4.3",
     "express": "^4.16.3",
+    "helmet": "2.3.0",
     "querystring": "^0.2.0",
+    "lodash": "4.16.3",
+    "mysql": "2.11.1",
     "request": "^2.85.0",
+    "nunjucks": "2.5.2",
+    "rg-async": "2.5.2",
+    "uuid": "2.0.3",
     "request-promise": "^4.2.2"
   }
 }
