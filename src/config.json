@@ -5,5 +5,11 @@
     "SPOTIFY_STATE_KEY": "spotify_auth_state",
     "SPOTIFY_TOKEN": "token",
     "PORT": 3000,
-    "ENVIRONMENT": "dev"
+    "ENVIRONMENT": "dev",
+    "CLIENT_DB": {
+        "user": "root",
+        "password": "",
+        "database": "twitch_extension",
+        "host": "localhost"
+    }
 }

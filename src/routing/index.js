@@ -32,7 +32,7 @@
 
 const express = require('express')
 const authentication = require('../authentication/router')
-const authentication = require('../api/spotify/router')
+const spotify = require('../api/spotify/router')
 const router = new express.Router()
 
 exports.routes = () => {

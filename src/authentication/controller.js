@@ -3,24 +3,22 @@
  * @author Rúben Gomes <gomesruben21@gmail.com>
  */
 
-// TODO: refactor
 const axios = require('axios')
-const querystring = require('querystring');
+const querystring = require('querystring')
 const { StringUtils } = require('../utils')
 const config = require('../configuration')
 const stateKey = config.get('SPOTIFY_STATE_KEY')
-const client_id = config.get('SPOTIFY_CLIENT_ID')
-const client_secret = config.get('SPOTIFY_CLIENT_SECRET')
-const redirect_uri = config.get('SPOTIFY_REDIRECT_URI')
+const clientId = config.get('SPOTIFY_CLIENT_ID')
+const clientSecret = config.get('SPOTIFY_CLIENT_SECRET')
+const redirectUri = config.get('SPOTIFY_REDIRECT_URI')
 
 // your application requests authorization
-const scope = 'user-read-private user-read-email playlist-read-private playlist-read-collaborative playlist-modify-public playlist-modify-private user-library-read user-top-read user-modify-playback-state user-read-currently-playing';
-
+const scope = 'user-read-private user-read-email playlist-read-private playlist-read-collaborative playlist-modify-public playlist-modify-private user-library-read user-top-read user-modify-playback-state user-read-currently-playing'
 
 module.exports = { login, loginCallback, refreshToken }
 
 /**
-* @api {get} /auth/login Logins into spotify account 
+* @api {get} /auth/login Logins into spotify account
 * @apiDescription Get all versions for a specific versions.
 * @apiGroup Versions
 * @apiVersion 0.0.1
@@ -31,14 +29,14 @@ module.exports = { login, loginCallback, refreshToken }
 * @apiUse defaultErrorExample
 */
 function login(req, res, next) {
-    const state = StringUtils.generateRandomString(16);
-    res.cookie(stateKey, state);
+    const state = StringUtils.generateRandomString(16)
+    res.cookie(stateKey, state)
     const query = querystring.stringify({ response_type: 'code', client_id: clientId, scope, redirect_uri: redirectUri, state })
     res.redirect(`https://accounts.spotify.com/authorize?${query}`)
 }
 
 /**
-* @api {get} /auth/callback Logins into spotify account 
+* @api {get} /auth/callback Logins into spotify account
 * @apiDescription Get all versions for a specific versions.
 * @apiGroup Versions
 * @apiVersion 0.0.1
@@ -48,82 +46,45 @@ function login(req, res, next) {
 *
 * @apiUse defaultErrorExample
 */
-function loginCallback(req, res, next) {
-
+async function loginCallback(req, res, next) {
     // your application requests refresh and access tokens
     // after checking the state parameter
     const { cookies = {}, query: { code = null, state = null } } = req
     const storedState = cookies[stateKey] || null
-  
+
     if (state === null || state !== storedState) { return res.redirect(`/#${querystring.stringify({error: 'state_mismatch'})}`) }
-    
-    res.clearCookie(stateKey);
-    var authOptions = {
-    url: 'https://accounts.spotify.com/api/token',
-    form: {
-        code: code,
-        redirect_uri: redirect_uri,
-        grant_type: 'authorization_code'
-    },
-    headers: {
-        'Authorization': 'Basic ' + (new Buffer(client_id + ':' + client_secret).toString('base64'))
-    },
-    json: true
-    };
-  
-      request.post(authOptions, function(error, response, body) {
-        if (!error && response.statusCode === 200) {
-  
-          var access_token = body.access_token,
-              refresh_token = body.refresh_token;
-  
-          var options = {
-            url: 'https://api.spotify.com/v1/me',
-            headers: { 'Authorization': 'Bearer ' + access_token },
-            json: true
-          };
-  
-          // use the access token to access the Spotify Web API
-          request.get(options, function(error, response, body) {
-            console.log(body);
-          });
-  
-          // we can also pass the token to the browser to make requests from there
-          res.redirect('/#' +
-            querystring.stringify({
-              access_token: access_token,
-              refresh_token: refresh_token
-            }));
-        } else {
-          res.redirect('/#' +
-            querystring.stringify({
-              error: 'invalid_token'
-            }));
-        }
-      });
+
+    res.clearCookie(stateKey)
+    const authToken = Buffer.from(`${clientId}:${clientSecret}`).toString('base64')
+    const authOptions = {
+        url: 'https://accounts.spotify.com/api/token',
+        form: { code, redirect_uri: redirectUri, grant_type: 'authorization_code' },
+        headers: { 'Authorization': `Basic ${authToken}` }
     }
-  });
 
- function refreshToken(req, res, next) {
+    const { status, data: body } = await axios(authOptions)
+    if (status !== 200) { return res.redirect(`/#${querystring.stringify({ error: 'invalid_token' })}`) }
+    // valid
+    const { access_token: accessToken, refresh_token: refreshToken } = body
+    const options = { url: 'https://api.spotify.com/v1/me', headers: { 'Authorization': `Bearer ${accessToken}` } }
+    const { data } = await axios(options)
+    console.log(data)
 
+    return res.redirect(`/#${querystring.stringify({ accessToken, refreshToken })}`)
+}
+
+async function refreshToken(req, res, next) {
     // requesting access token from refresh token
-    var refresh_token = req.query.refresh_token;
+    const { refreshToken } = req.query
+    const authToken = Buffer.from(`${clientId}:${clientSecret}`).toString('base64')
     var authOptions = {
-      url: 'https://accounts.spotify.com/api/token',
-      headers: { 'Authorization': 'Basic ' + (new Buffer(client_id + ':' + client_secret).toString('base64')) },
-      form: {
-        grant_type: 'refresh_token',
-        refresh_token: refresh_token
-      },
-      json: true
-    };
-  
-    request.post(authOptions, function(error, response, body) {
-      if (!error && response.statusCode === 200) {
-        var access_token = body.access_token;
-        res.send({
-          'access_token': access_token
-        });
-      }
-    });
-  });
+        url: 'https://accounts.spotify.com/api/token',
+        headers: { 'Authorization': `Basic ${authToken}` },
+        form: { grant_type: 'refresh_token', refresh_token: refreshToken }
+    }
+
+    const { status, data: { access_token: accessToken } } = await axios(authOptions)
+    if (status !== 200) { return next() }
+
+    res.send({ accessToken })
+}
