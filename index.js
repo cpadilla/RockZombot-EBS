@@ -6,12 +6,12 @@
  * For more information, read
  * https://developer.spotify.com/web-api/authorization-guide/#authorization_code_flow
  */
-
+var spotify = require('./Spotify/swrapper.js')
 var express = require('express'); // Express web server framework
 var request = require('request'); // "Request" library
 var querystring = require('querystring');
 var cookieParser = require('cookie-parser');
-
+var bodyParser = require('body-parser');
 var client_id = 'dfbe0669b7fb4707ad274d0751f3ea90'; // Your client id
 var client_secret = 'c903b543827e4676bee7a5ca74388395'; // Your secret
 var redirect_uri = 'http://localhost:8888/callback/'; // Your redirect uri
@@ -35,6 +35,9 @@ var stateKey = 'spotify_auth_state';
 
 var app = express();
 
+
+//app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json())
 app.use(express.static(__dirname + '/public'))
    .use(cookieParser());
 
@@ -55,6 +58,23 @@ app.get('/login', function(req, res) {
       redirect_uri: redirect_uri,
       state: state
     }));
+});
+
+
+app.get('/song', function(req, res){
+  res.sendFile(__dirname + "/public/post.html");
+});
+
+
+app.post('/getsong', function(req, res){
+  console.log("Post Request Received! " + req.body.songname);
+  spotify.playSong(req.body.songname).then(function (e){
+    res.send(e);
+  }).catch(function (error){
+    console.log(error)
+    res.send(error);
+  });
+
 });
 
 app.get('/callback', function(req, res) {

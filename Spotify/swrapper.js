@@ -1,6 +1,7 @@
 const request = require('request-promise');
 
-var token = ""; //place your spotify token here
+var token = "";  //Place token here
+
 module.exports = {
   playSong: function getSong(song){
 //If the string has spaces, replace space with %20
@@ -31,10 +32,10 @@ module.exports = {
             'Authorization': `Bearer ${token}`
           }
         };
-        request(options_new).then(function(success){resolve("Request Succesfully Sent!")}).catch(function(error){reject(error)})
+        request(options_new).then(function(success){resolve(trackInfo.tracks.items[0])}).catch(function(error){reject("Second Request Error" + error)})
         //resolve(trackInfo.tracks.items[0].uri);
       }).catch(function(error){
-        reject(error);
+        reject("First Request Error" + error);
       });
     });
   },

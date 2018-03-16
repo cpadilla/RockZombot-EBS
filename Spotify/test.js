@@ -1,3 +1,3 @@
-const spot = require('./swrapper.js')
+const spot = require('./swrapper.js');
 
-spot.playSong("gummo").then(function (e){console.log(e)}).catch(function (error){console.log(error)});
+spot.playSong("omg usher").then(function (e){console.log(e);}).catch(function (error){console.log(error);});

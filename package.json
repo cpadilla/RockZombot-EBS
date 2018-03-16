@@ -17,10 +17,11 @@
   },
   "homepage": "https://github.com/cpadilla/RockZombot-EBS#readme",
   "dependencies": {
+    "body-parser": "^1.18.2",
     "cookie-parser": "^1.4.3",
     "express": "^4.16.3",
     "querystring": "^0.2.0",
-    "request": "^2.83.0",
+    "request": "^2.85.0",
     "request-promise": "^4.2.2"
   }
 }
