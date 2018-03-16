@@ -1,7 +1,8 @@
 exports.getLink = function(req, res, next) {
     console.log('getlink POST recieved')
-    console.log(req.body)
+
+    // TODO make request to pastebin api
     res.send({
-        message: "recieved"
+        link: "https://pastebin.com"
     });
 }

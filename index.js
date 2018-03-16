@@ -9,6 +9,7 @@
 
 var express = require('express'); // Express web server framework
 var request = require('request'); // "Request" library
+var bodyParser = require('body-parser')
 var querystring = require('querystring');
 var cookieParser = require('cookie-parser');
 
@@ -41,10 +42,20 @@ var app = express();
 app.use(express.static(__dirname + '/public'))
   .use(cookieParser());
 
+// parse application/json
+app.use(bodyParser.json())
+
+// Allow CORS
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+});
+
+
 // Pastebin
 
-// app.post()
-// app.post('/pastebin', pastebin.getLink)
+app.post('/pastebin', pastebin.getLink)
 
 // Spotify
 
