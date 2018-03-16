@@ -1,12 +1,16 @@
-const request = require('request-promise')
+const request = require('request-promise');
 
-var token = ""  //Place your spotify token here
+var token = "";  //Place token here
+
 module.exports = {
   playSong: function getSong(song){
-    console.log('Getting song: ', song)
-    if(song.indexOf(' ') > 0){
-      song.replace(" ", "%20")
+//If the string has spaces, replace space with %20
+    if(song.indexOf(' ') >= 0){
+      var parsed_song = song.replace(/ /g,"%20")
+      song = parsed_song;
+      //console.log("Parsed Song: " + parsed_song);
     }
+//Options for get song request
     var options = {
       url: `https://api.spotify.com/v1/search?q=${song}&type=track&market=us&limit=1`,
       headers: {
@@ -18,7 +22,7 @@ module.exports = {
     return promise = new Promise(function (resolve, reject){
       request(options).then(function(data){
         var trackInfo = JSON.parse(data);
-        //console.log(trackInfo.tracks.items[0].uri);
+//Options for play song on device request note: adding: ?device:<device> has issues
         var options_new = {
           url: "https://api.spotify.com/v1/me/player/play",
           method: "PUT",
@@ -28,17 +32,19 @@ module.exports = {
             'Authorization': `Bearer ${token}`
           }
         };
-        request(options_new).then( function(success) {
-          resolve("Request Succesfully Sent!")
-        }).catch( function(error) {
-          reject(error)
+        request(options_new).then(function(success) {
+            resolve(trackInfo.tracks.items[0])
+        }).catch(function(error) {
+            reject("Second Request Error" + error)
         })
         //resolve(trackInfo.tracks.items[0].uri);
       }).catch(function(error){
-        reject(error);
+        reject("First Request Error" + error);
       });
     });
   },
+
+  //Depricated ignore
   play: function play(){
 
     return promise = new Promise(function(resolve, reject){
