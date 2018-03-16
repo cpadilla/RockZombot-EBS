@@ -32,7 +32,11 @@ module.exports = {
             'Authorization': `Bearer ${token}`
           }
         };
-        request(options_new).then(function(success){resolve(trackInfo.tracks.items[0])}).catch(function(error){reject("Second Request Error" + error)})
+        request(options_new).then(function(success) {
+            resolve(trackInfo.tracks.items[0])
+        }).catch(function(error) {
+            reject("Second Request Error" + error)
+        })
         //resolve(trackInfo.tracks.items[0].uri);
       }).catch(function(error){
         reject("First Request Error" + error);

@@ -9,12 +9,16 @@
 var spotify = require('./Spotify/swrapper.js')
 var express = require('express'); // Express web server framework
 var request = require('request'); // "Request" library
+var bodyParser = require('body-parser')
 var querystring = require('querystring');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var client_id = 'dfbe0669b7fb4707ad274d0751f3ea90'; // Your client id
 var client_secret = 'c903b543827e4676bee7a5ca74388395'; // Your secret
 var redirect_uri = 'http://localhost:8888/callback/'; // Your redirect uri
+
+var spotify = require('./routes/spotify');
+var pastebin = require('./routes/pastebin');
 
 /**
  * Generates a random string containing numbers and letters
@@ -39,9 +43,26 @@ var app = express();
 //app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json())
 app.use(express.static(__dirname + '/public'))
-   .use(cookieParser());
+  .use(cookieParser());
 
-app.use('/api/spotify', require('./routes/spotify'))
+// parse application/json
+app.use(bodyParser.json())
+
+// Allow CORS
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+});
+
+
+// Pastebin
+
+app.post('/pastebin', pastebin.getLink)
+
+// Spotify
+
+app.get('/spotify/playSong/:song', spotify.playSong);
 
 app.get('/login', function(req, res) {
 
