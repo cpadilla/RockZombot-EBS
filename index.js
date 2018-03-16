@@ -17,6 +17,7 @@ var client_secret = 'c903b543827e4676bee7a5ca74388395'; // Your secret
 var redirect_uri = 'http://localhost:8888/callback/'; // Your redirect uri
 
 var spotify = require('./routes/spotify');
+var pastebin = require('./routes/pastebin');
 
 /**
  * Generates a random string containing numbers and letters
@@ -39,6 +40,11 @@ var app = express();
 
 app.use(express.static(__dirname + '/public'))
   .use(cookieParser());
+
+// Pastebin
+
+// app.post()
+// app.post('/pastebin', pastebin.getLink)
 
 // Spotify
 
