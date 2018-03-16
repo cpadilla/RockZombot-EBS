@@ -1,0 +1,9 @@
+{
+    "SPOTIFY_CLIENT_ID": "dfbe0669b7fb4707ad274d0751f3ea90",
+    "SPOTIFY_CLIENT_SECRET": "c903b543827e4676bee7a5ca74388395",
+    "SPOTIFY_REDIRECT_URI": "http://localhost:8888/auth/callback/",
+    "SPOTIFY_STATE_KEY": "spotify_auth_state",
+    "SPOTIFY_TOKEN": "token",
+    "PORT": 3000,
+    "ENVIRONMENT": "dev"
+}

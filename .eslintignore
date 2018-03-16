@@ -1,0 +1,5 @@
+docs/
+.vscode/
+coverage/
+test/
+!test/configuration.js
