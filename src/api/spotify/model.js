@@ -1,7 +1,7 @@
-const nunjucks = require('nunjucks')
 const axios = require('axios')
 const { StringUtils } = require('../../utils')
 const Model = require('../../model')
+const token = ''
 
 class SpotifyModel extends Model {
     constructor({ name, Connection }) {
@@ -12,7 +12,7 @@ class SpotifyModel extends Model {
         song = StringUtils.encodeString(song)
         const options = {
             url: `https://api.spotify.com/v1/search?q=${song}&type=track&market=us&limit=1`,
-            headers: { 
+            headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`,
                 'Accept': 'application/json'
@@ -21,7 +21,7 @@ class SpotifyModel extends Model {
 
         const { tracks: { items } } = JSON.parse(await axios(options).then(({ data }) => data))
         const [track] = items
-        const newOptions = { 
+        const newOptions = {
             ...options,
             url: 'https://api.spotify.com/v1/me/player/play',
             method: 'put',

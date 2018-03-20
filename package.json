@@ -4,7 +4,7 @@
   "description": "Extension Backend Service for RockZombot",
   "main": "index.js",
   "scripts": {
-    "lint": "eslint ./src/**/*.js",
+    "lint": "eslint src/**/*.js src/**/**/*.js",
     "watch:lint": "esw -w --cache --clear --color",
     "clean:jsdocs": "rimraf docs",
     "clean:apidocs": "rimraf apidocs",

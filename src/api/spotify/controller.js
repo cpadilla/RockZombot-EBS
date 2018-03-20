@@ -1,12 +1,6 @@
-/**
- * Defines properties controller
- * @author Rúben Gomes <gomesruben21@gmail.com>
- */
-
 const Model = require('./model')
 
 module.exports = { getSong }
-
 
 /**
 * @api {get} /spotify/getSong/:song Get a song from spotify

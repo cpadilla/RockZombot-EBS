@@ -6,7 +6,7 @@
   "source": {
       "include": ["src"],
       "includePattern": ".js$",
-      "excludePattern": "(node_modules/|api/|routing/)"
+      "excludePattern": "(node_modules/|api/|routing/|authentication/)"
   },
   "plugins": [
       "plugins/markdown",
@@ -15,7 +15,7 @@
   "templates": {
       "cleverLinks"           : true,
       "monospaceLinks"        : false,
-      "systemName"            : "HostMaker Api Example",
+      "systemName"            : "RockZombot-EBS Api",
       "footer"                : "",
       "copyright"             :  "Copyright © Rúben Gomes",
       "includeDate"           : true,

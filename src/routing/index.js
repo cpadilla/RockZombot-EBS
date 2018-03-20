@@ -1,9 +1,4 @@
 /**
- * Defines all the routes for RockZombot-EBS api
- * @author Rúben Gomes <gomesruben21@gmail.com>
- */
-
-/**
  * @apiDefine defaultSuccessProperties
  *
  * @apiSuccess {Boolean} status true when execution is successful, false when something goes wrong
@@ -41,4 +36,3 @@ exports.routes = () => {
 
     return router
 }
-

@@ -1,8 +1,3 @@
-/**
- * Defines auth controller
- * @author Rúben Gomes <gomesruben21@gmail.com>
- */
-
 const axios = require('axios')
 const querystring = require('querystring')
 const { StringUtils } = require('../utils')
@@ -11,16 +6,14 @@ const stateKey = config.get('SPOTIFY_STATE_KEY')
 const clientId = config.get('SPOTIFY_CLIENT_ID')
 const clientSecret = config.get('SPOTIFY_CLIENT_SECRET')
 const redirectUri = config.get('SPOTIFY_REDIRECT_URI')
-
-// your application requests authorization
 const scope = 'user-read-private user-read-email playlist-read-private playlist-read-collaborative playlist-modify-public playlist-modify-private user-library-read user-top-read user-modify-playback-state user-read-currently-playing'
 
 module.exports = { login, loginCallback, refreshToken }
 
 /**
-* @api {get} /auth/login Logins into spotify account
-* @apiDescription Get all versions for a specific versions.
-* @apiGroup Versions
+* @api {get} /auth/login Login
+* @apiDescriptionLogins into spotify account
+* @apiGroup Auth
 * @apiVersion 0.0.1
 *
 * @apiUse defaultSuccessProperties
@@ -36,9 +29,9 @@ function login(req, res, next) {
 }
 
 /**
-* @api {get} /auth/callback Logins into spotify account
-* @apiDescription Get all versions for a specific versions.
-* @apiGroup Versions
+* @api {get} /auth/callback Spotify callback
+* @apiDescription Receives the callback from spotify account
+* @apiGroup Auth
 * @apiVersion 0.0.1
 *
 * @apiUse defaultSuccessProperties
@@ -73,6 +66,17 @@ async function loginCallback(req, res, next) {
     return res.redirect(`/#${querystring.stringify({ accessToken, refreshToken })}`)
 }
 
+/**
+* @api {get} /auth/refresh_token/:refreshToken Refresh token
+* @apiDescription Refresh the token from spotify account
+* @apiGroup Auth
+* @apiVersion 0.0.1
+* @apiParam {String} refreshToken The refresh token to use.
+* @apiUse defaultSuccessProperties
+* @apiUse defaultErrorProperties
+*
+* @apiUse defaultErrorExample
+*/
 async function refreshToken(req, res, next) {
     // requesting access token from refresh token
     const { refreshToken } = req.query

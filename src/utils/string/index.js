@@ -42,7 +42,7 @@ class StringUtils {
     static generateRandomString(length) {
         var text = ''
         var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
-    
+
         for (var i = 0; i < length; i++) {
             text += possible.charAt(Math.floor(Math.random() * possible.length))
         }
@@ -50,7 +50,7 @@ class StringUtils {
     }
 
     static encodeString(str) {
-        if(str.indexOf(' ') >= 0) { return song.replace(/ /g,"%20") }
+        if (str.indexOf(' ') >= 0) { return str.replace(/ /g, '%20') }
         return str
     }
 }
