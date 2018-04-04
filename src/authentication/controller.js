@@ -57,6 +57,7 @@ async function loginCallback(req, res, next) {
 
     const { status, data: body } = await axios(authOptions)
     if (status !== 200) { return res.redirect(`/#${querystring.stringify({ error: 'invalid_token' })}`) }
+    if (status === 405) { return res.send(status)}
     // valid
     const { access_token: accessToken, refresh_token: refreshToken } = body
     const options = { url: 'https://api.spotify.com/v1/me', headers: { 'Authorization': `Bearer ${accessToken}` } }
