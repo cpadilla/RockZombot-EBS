@@ -1,6 +1,6 @@
 {
-    "SPOTIFY_CLIENT_ID": "2f21f5d50d7443a2bd44804e542ff195",
-    "SPOTIFY_CLIENT_SECRET": "105039ea5247451c84e6eb2969f41032",
+    "SPOTIFY_CLIENT_ID": "",
+    "SPOTIFY_CLIENT_SECRET": "",
     "SPOTIFY_REDIRECT_URI": "http://localhost:3000/auth/callback/",
     "SPOTIFY_STATE_KEY": "spotify_auth_state",
     "SPOTIFY_TOKEN": "token",

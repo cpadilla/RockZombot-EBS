@@ -1,8 +1,7 @@
 const axios = require('axios')
 const { StringUtils } = require('../../utils')
 const Model = require('../../model')
-const token = 'BQAVWIjd9hqDnphhLYhodPn__gHKLeAvFjtqgVxIpCFVLCnsC1LjksMDe1Aq8pCOS24oUHmr5mI2o74GYHiZhRK3EeN3cXHmNRvaH-aVwDKLtRRq_zG2PM9XDvn3DezMURixIrMfvl6U8VQtOMqeiUGnZv0JDvHR9f5dtQCy7q6QaqO6k_N1ipfjwJoMDPPWkEr-LiWVQIBKppz3AVlf43_ILVkr5Awy9Qaucy6Z7U9ufXC5n4XkXu4CiPm_kRP7T1xmxTE'
-
+const token = "BQA_cRUinhRWTdMiheAaCnrqm-B9NeF6bd-EXH6SpQxzk5bvVWXsJS8PZDTK-nzR3O9UGSO1y3Msb0MTlDzek6G6ZrEU0ox0pct2u0ai68VCEsHOSw5F5JOF7FpkVknTMnO-dmsJR0RDnu9qDak5q2sRmwpQK6OM0piPFANGv-xMpT5ClbVhtuy-fk7btSSzAqmuitoqewzBKTnY5FDOUIkcc9aEKyfx1w2QxwGQ32HDkfW567T7"
 class SpotifyModel extends Model {
     constructor({ name, Connection }) {
         super({ name })

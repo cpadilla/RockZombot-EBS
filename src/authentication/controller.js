@@ -50,21 +50,23 @@ async function loginCallback(req, res, next) {
     res.clearCookie(stateKey)
     const authToken = Buffer.from(`${clientId}:${clientSecret}`).toString('base64')
     const authOptions = {
+        method: 'post',
         url: 'https://accounts.spotify.com/api/token',
-        form: { code, redirect_uri: redirectUri, grant_type: 'authorization_code' },
-        headers: { 'Authorization': `Basic ${authToken}` }
+        params: { code: code , redirect_uri: redirectUri, grant_type: 'authorization_code' },
+        headers: { 'Authorization': `Basic ${authToken}`},
     }
 
-    const { status, data: body } = await axios(authOptions)
-    if (status !== 200) { return res.redirect(`/#${querystring.stringify({ error: 'invalid_token' })}`) }
-    if (status === 405) { return res.send(status)}
-    // valid
-    const { access_token: accessToken, refresh_token: refreshToken } = body
-    const options = { url: 'https://api.spotify.com/v1/me', headers: { 'Authorization': `Bearer ${accessToken}` } }
-    const { data } = await axios(options)
-    console.log(data)
+    try{
+      const { status, data: body } = await axios(authOptions)
+      if (status !== 200) { return res.redirect(`/#${querystring.stringify({ error: 'invalid_token' })}`) }
+      // valid
+      const { access_token: accessToken, refresh_token: refreshToken } = body
+      const options = { url: 'https://api.spotify.com/v1/me', headers: { 'Authorization': `Bearer ${accessToken}` } }
+      const { data } = await axios(options)
+      console.log(data)
+      return res.redirect(`/#${querystring.stringify({ accessToken, refreshToken })}`)
+  }catch(error){res.end()}
 
-    return res.redirect(`/#${querystring.stringify({ accessToken, refreshToken })}`)
 }
 
 /**
@@ -79,17 +81,26 @@ async function loginCallback(req, res, next) {
 * @apiUse defaultErrorExample
 */
 async function refreshToken(req, res, next) {
+    //refreshToken is empty figure out why.
     // requesting access token from refresh token
     const { refreshToken } = req.query
+    console.log(refreshToken)
     const authToken = Buffer.from(`${clientId}:${clientSecret}`).toString('base64')
     var authOptions = {
         url: 'https://accounts.spotify.com/api/token',
         headers: { 'Authorization': `Basic ${authToken}` },
-        form: { grant_type: 'refresh_token', refresh_token: refreshToken }
+        params: {grant_type: 'refresh_token', refresh_token: refreshToken, redirect_uri: redirectUri }
     }
 
-    const { status, data: { access_token: accessToken } } = await axios(authOptions)
-    if (status !== 200) { return next() }
+    try{
+      const { status, data: { access_token: accessToken } } = await axios(authOptions)
+      if (status !== 200) { return next() }
 
-    res.send({ accessToken })
+      res.send({ accessToken })
+  }
+    catch(error){
+      console.log(error)
+      res.end()
+    }
+
 }
